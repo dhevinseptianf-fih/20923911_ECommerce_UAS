@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SSD NVMe 1TB Gen4 — Luma Tech</title>
+  <title>GPU NVIDIA GeForce RTX 4070 — Luma Tech</title>
   <link rel="stylesheet" href="../assets/css/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 <header class="site-header">
   <div class="container header-wrap">
-    <a class="logo" href="../index.html"><img src="assets/img/Proyek Baru 393 [E1B0C1C].png" alt="Logo LumaTech" width="150"</a>
+    <a class="logo" href="../index.html"><img src="assets/img/logo/Proyek Baru 393 [E1B0C1C].png" alt="Logo LumaTech" width="150"</a>
     <nav class="nav" id="mainNav">
       <a href="../index.html">Home</a>
       <a href="../product.html" class="active">Produk</a>
+      <a href="../checkout.html">Keranjang</a>
       <a href="../kontak.html">Kontak</a>
     </nav>
     <button class="menu-toggle" id="menuToggle">☰</button>
@@ -24,31 +25,37 @@
   <nav class="breadcrumb">
     <a href="../index.html">Home</a> <span>/</span>
     <a href="../product.html">Produk</a> <span>/</span>
-    <span>SSD NVMe 1TB Gen4</span>
+    <span>GeForce RTX 4070</span>
   </nav>
 
   <div class="product">
     <div class="product-media">
-      <img src="https://images.unsplash.com/photo-1587202372616-c2ab01dc1e49?q=80&w=1200&auto=format&fit=crop" alt="SSD NVMe 1TB">
+      <img src="https://images.tokopedia.net/img/cache/700/VqbcmM/2022/4/22/9b1498b4-e989-44ed-a1a3-cde03aa73fae.jpg" alt="AMD RYZEN 5 5500">
     </div>
     <div class="product-info">
-      <h1>SSD NVMe 1TB Gen4</h1>
-      <div class="price-lg">Rp 1.399.000</div>
-      <p>Storage kencang untuk game & kerja kreatif dengan heatsink bawaan.</p>
+      <h1>AMD Ryzen 5 5500</h1>
+      <div class="price-lg">Rp 1.300.000</div>
+      <p>Prosessor desktop kelas menengah berbasis arsitektur Zen 3 dengan 6 core 12 thread, kecepatan hingga 4,2 GHz, cache L3 16 MB, dan TDP 65W.</p>
 
       <h3>Spesifikasi</h3>
       <ul class="specs">
-        <li>Form Factor: M.2 2280</li>
-        <li>Interface: PCIe 4.0 x4, NVMe 1.4</li>
-        <li>Baca/Tulis: hingga 7000/6000 MB/s</li>
-        <li>TBW: 600 TB</li>
-        <li>Garansi: 5 Tahun</li>
+        <li>Core/Thread: 6C / 12T</li>
+        <li>Socket: AM4</li>
+        <li>Base/Boost Clock: hingga 3,6 GHz dan 4,2 GHz</li>
+        <li>TDP: 65W</li>
+        <li>Memori Support: DDR4 3200 (Dual-Channel)</li>
       </ul>
 
-      <div class="actions">
-        <button class="btn btn-primary" data-buy="SSD NVMe 1TB Gen4">Beli</button>
-        <a class="btn btn-outline" href="../product.html">Kembali ke Produk</a>
-      </div>
+      <!-- Tombol Tambah ke Keranjang -->
+      <button class="btn btn-primary add-to-cart"
+        data-id="4070"
+        data-name="AMD Ryzen 5 5500"
+        data-price="1300000"
+        data-image="https://images.tokopedia.net/img/cache/700/VqbcmM/2022/4/22/9b1498b4-e989-44ed-a1a3-cde03aa73fae.jpg">
+        Tambah ke Keranjang
+      </button>
+
+      <a class="btn btn-outline" href="../product.html">Kembali ke Produk</a>
     </div>
   </div>
 </main>
@@ -73,6 +80,6 @@
     </div>
   </footer>
 
-<script src="assets/js/script.js"></script>
+<script src="../assets/js/script.js"></script>
 </body>
 </html>
