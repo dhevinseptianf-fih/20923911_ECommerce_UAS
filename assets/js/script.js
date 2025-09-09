@@ -1,6 +1,10 @@
+// =============================
+// Toggle Menu Mobile
+// =============================
 const toggle = document.getElementById("menuToggle");
 const nav = document.getElementById("mainNav");
 
+// Event untuk membuka/menutup menu navigasi di mobile
 if (toggle && nav) {
   toggle.addEventListener("click", () => {
     const visible = getComputedStyle(nav).display !== "none";
@@ -8,15 +12,22 @@ if (toggle && nav) {
   });
 }
 
+// =============================
+// Fungsi Cart (Keranjang Belanja)
+// =============================
+
+// Ambil data cart dari localStorage
 function getCart() {
   return JSON.parse(localStorage.getItem("cart")) || [];
 }
 
+// Simpan cart ke localStorage
 function saveCart(cart) {
   localStorage.setItem("cart", JSON.stringify(cart));
   updateCartBadge();
 }
 
+// Update badge jumlah item di ikon keranjang
 function updateCartBadge() {
   const cart = getCart();
   const badge = document.getElementById("cart-badge");
@@ -27,19 +38,22 @@ function updateCartBadge() {
   badge.style.display = totalItems > 0 ? "inline-block" : "none";
 }
 
+// Tambah produk ke cart
 function addToCart(product, btn) {
   let cart = getCart();
 
+  // Cek apakah produk sudah ada di cart
   const existing = cart.find((item) => item.id === product.id);
   if (existing) {
-    existing.qty += 1;
+    existing.qty += 1; // kalau sudah ada, tambahin jumlahnya
   } else {
     product.qty = 1;
-    cart.push(product);
+    cart.push(product); // kalau belum ada, tambahkan ke cart
   }
 
   saveCart(cart);
 
+  // Jika tombol berasal dari kartu produk, hapus kartu itu setelah ditambahkan
   if (btn) {
     const card = btn.closest(".product-card");
     if (card) card.remove();
@@ -49,6 +63,7 @@ function addToCart(product, btn) {
   renderCart();
 }
 
+// Event listener untuk tombol "Tambah ke Keranjang"
 document.querySelectorAll(".add-to-cart").forEach((btn) => {
   btn.addEventListener("click", () => {
     const product = {
@@ -63,6 +78,7 @@ document.querySelectorAll(".add-to-cart").forEach((btn) => {
 
 let cart = getCart();
 
+// Render tampilan cart ke halaman
 function renderCart() {
   cart = getCart();
 
@@ -72,6 +88,7 @@ function renderCart() {
 
   if (!cartItems) return;
 
+  // Kalau keranjang kosong
   if (cart.length === 0) {
     cartItems.innerHTML = "<p>Keranjang belanja kosong.</p>";
     if (cartTotal) cartTotal.textContent = "Rp 0";
@@ -79,6 +96,7 @@ function renderCart() {
     return;
   }
 
+  // Tampilkan isi keranjang
   cartItems.innerHTML = cart
     .map(
       (item, index) => `
@@ -101,9 +119,11 @@ function renderCart() {
     )
     .join("");
 
+  // Hitung total harga
   total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
   if (cartTotal) cartTotal.textContent = "Rp " + total.toLocaleString();
 
+  // Hapus item
   document.querySelectorAll(".remove-item").forEach((btn) => {
     btn.addEventListener("click", () => {
       const index = btn.dataset.index;
@@ -113,6 +133,7 @@ function renderCart() {
     });
   });
 
+  // Tambah qty
   document.querySelectorAll(".increase-qty").forEach((btn) => {
     btn.addEventListener("click", () => {
       const index = btn.dataset.index;
@@ -122,6 +143,7 @@ function renderCart() {
     });
   });
 
+  // Kurangi qty
   document.querySelectorAll(".decrease-qty").forEach((btn) => {
     btn.addEventListener("click", () => {
       const index = btn.dataset.index;
@@ -135,6 +157,7 @@ function renderCart() {
     });
   });
 
+  // Event kosongkan keranjang
   const clearBtn = document.getElementById("clear-cart");
   if (clearBtn) {
     clearBtn.onclick = () => {
@@ -149,32 +172,40 @@ function renderCart() {
   updateCartBadge();
 }
 
+// =============================
+// Checkout (Form Pembelian)
+// =============================
 const checkoutForm = document.getElementById("checkout-form");
 
 const orderModal = document.getElementById("orderModal");
 const closeModal = document.getElementById("closeModal");
 const okBtn = document.getElementById("okBtn");
 
+// Fungsi untuk membuka modal
 function openModal() {
   orderModal.classList.remove("hidden");
   setTimeout(() => orderModal.classList.add("show"), 10); // trigger animasi
 }
 
+// Fungsi untuk menutup modal
 function closeModalFn() {
   orderModal.classList.remove("show");
   setTimeout(() => orderModal.classList.add("hidden"), 300); // tunggu animasi selesai
 }
 
+// Event close modal
 closeModal.addEventListener("click", closeModalFn);
 okBtn.addEventListener("click", closeModalFn);
 orderModal.addEventListener("click", (e) => {
   if (e.target === orderModal) closeModalFn();
 });
 
+// Event submit form checkout
 if (checkoutForm) {
   checkoutForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
+    // Cek kalau keranjang kosong
     if (cart.length === 0) {
       showToast("Keranjang masih kosong!", true);
       return;
@@ -186,6 +217,7 @@ if (checkoutForm) {
 
     const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 
+    // Isi pesan order
     const orderMessage = document.getElementById("orderMessage");
     orderMessage.innerHTML = `
       Terima kasih, <b>${nama}</b>!<br>
@@ -196,6 +228,7 @@ if (checkoutForm) {
 
     openModal();
 
+    // Reset keranjang setelah checkout
     cart = [];
     localStorage.removeItem("cart");
     renderCart();
@@ -203,6 +236,9 @@ if (checkoutForm) {
   });
 }
 
+// =============================
+// Form Kontak
+// =============================
 const form = document.getElementById("contactForm");
 
 if (form) {
@@ -213,6 +249,7 @@ if (form) {
     const email = form.email.value.trim();
     const pesan = form.pesan.value.trim();
 
+    // Validasi form
     if (!nama || !email || !pesan) {
       showToast("Mohon lengkapi semua field.", true);
       return;
@@ -227,6 +264,9 @@ if (form) {
   });
 }
 
+// =============================
+// Toast Notification
+// =============================
 function showToast(message, isError = false) {
   let toast = document.createElement("div");
   toast.textContent = message;
@@ -251,4 +291,7 @@ function showToast(message, isError = false) {
   }, 3000);
 }
 
+// =============================
+// Render cart pertama kali
+// =============================
 renderCart();
