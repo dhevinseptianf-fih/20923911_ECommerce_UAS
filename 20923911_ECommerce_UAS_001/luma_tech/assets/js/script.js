@@ -14,13 +14,30 @@ function getCart() {
 
 function saveCart(cart) {
   localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartBadge();
+}
+
+function updateCartBadge() {
+  const cart = getCart();
+  const badge = document.getElementById("cart-badge");
+  if (!badge) return;
+
+  const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+  badge.textContent = totalItems > 0 ? totalItems : "";
+  badge.style.display = totalItems > 0 ? "inline-block" : "none";
 }
 
 function addToCart(product, btn) {
   let cart = getCart();
 
-  product.qty = 1;
-  cart.push(product);
+  const existing = cart.find((item) => item.id === product.id);
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    product.qty = 1;
+    cart.push(product);
+  }
+
   saveCart(cart);
 
   if (btn) {
@@ -28,7 +45,7 @@ function addToCart(product, btn) {
     if (card) card.remove();
   }
 
-  alert(`${product.name} berhasil dibeli dan ditambahkan ke keranjang!`);
+  showToast(`${product.name} berhasil ditambahkan ke keranjang!`);
   renderCart();
 }
 
@@ -58,6 +75,7 @@ function renderCart() {
   if (cart.length === 0) {
     cartItems.innerHTML = "<p>Keranjang belanja kosong.</p>";
     if (cartTotal) cartTotal.textContent = "Rp 0";
+    updateCartBadge();
     return;
   }
 
@@ -69,8 +87,12 @@ function renderCart() {
         <img src="${item.image}" alt="${item.name}" style="width:80px;height:80px;object-fit:cover;border-radius:8px">
         <div>
           <h3>${item.name}</h3>
-          <p>Qty: ${item.qty}</p>
-          <p class="price">Rp ${item.price.toLocaleString()}</p>
+          <div style="display:flex;align-items:center;gap:8px;margin:6px 0">
+            <button class="decrease-qty" data-index="${index}" style="padding:4px 8px">-</button>
+            <span>${item.qty}</span>
+            <button class="increase-qty" data-index="${index}" style="padding:4px 8px">+</button>
+          </div>
+          <p class="price">Rp ${(item.price * item.qty).toLocaleString()}</p>
         </div>
       </div>
       <button class="btn btn-outline remove-item" data-index="${index}">Hapus</button>
@@ -91,6 +113,28 @@ function renderCart() {
     });
   });
 
+  document.querySelectorAll(".increase-qty").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const index = btn.dataset.index;
+      cart[index].qty += 1;
+      saveCart(cart);
+      renderCart();
+    });
+  });
+
+  document.querySelectorAll(".decrease-qty").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const index = btn.dataset.index;
+      if (cart[index].qty > 1) {
+        cart[index].qty -= 1;
+      } else {
+        cart.splice(index, 1);
+      }
+      saveCart(cart);
+      renderCart();
+    });
+  });
+
   const clearBtn = document.getElementById("clear-cart");
   if (clearBtn) {
     clearBtn.onclick = () => {
@@ -101,6 +145,8 @@ function renderCart() {
       }
     };
   }
+
+  updateCartBadge();
 }
 
 const checkoutForm = document.getElementById("checkout-form");
@@ -110,7 +156,7 @@ if (checkoutForm) {
     e.preventDefault();
 
     if (cart.length === 0) {
-      alert("Keranjang masih kosong!");
+      showToast("Keranjang masih kosong!", true);
       return;
     }
 
@@ -120,8 +166,8 @@ if (checkoutForm) {
 
     const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 
-    alert(
-      `Terima kasih, ${nama}!\nPesanan kamu sudah berhasil.\nTotal pembayaran: Rp ${total.toLocaleString()}\nPesanan akan dikirim ke: ${alamat}`
+    showToast(
+      `Terima kasih, ${nama}! Pesanan berhasil.\nTotal: Rp ${total.toLocaleString()}\nDikirim ke: ${alamat}`
     );
 
     cart = [];
@@ -142,17 +188,41 @@ if (form) {
     const pesan = form.pesan.value.trim();
 
     if (!nama || !email || !pesan) {
-      alert("Mohon lengkapi semua field.");
+      showToast("Mohon lengkapi semua field.", true);
       return;
     }
     if (!/^\S+@\S+\.\S+$/.test(email)) {
-      alert("Format email tidak valid.");
+      showToast("Format email tidak valid.", true);
       return;
     }
 
-    alert("Terima kasih! Pesan Anda telah terekam (demo).");
+    showToast("Terima kasih! Pesan Anda telah terekam (demo).");
     form.reset();
   });
+}
+
+function showToast(message, isError = false) {
+  let toast = document.createElement("div");
+  toast.textContent = message;
+  toast.style.position = "fixed";
+  toast.style.bottom = "20px";
+  toast.style.right = "20px";
+  toast.style.background = isError ? "#e74c3c" : "#27ae60";
+  toast.style.color = "#fff";
+  toast.style.padding = "12px 20px";
+  toast.style.borderRadius = "8px";
+  toast.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
+  toast.style.zIndex = "9999";
+  toast.style.opacity = "0";
+  toast.style.transition = "opacity 0.3s ease";
+
+  document.body.appendChild(toast);
+
+  setTimeout(() => (toast.style.opacity = "1"), 50);
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
 }
 
 renderCart();
