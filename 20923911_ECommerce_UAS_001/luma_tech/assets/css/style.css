@@ -167,6 +167,85 @@ body {
 }
 .btn-outline:hover { border-color: rgba(255,255,255,.3); }
 
+/* ====================== */
+/* Modal Overlay */
+/* ====================== */
+.modal.hidden {
+  display: none;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Saat aktif */
+.modal.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Isi modal */
+.modal-content {
+  position: relative;
+  background: rgba(165, 165, 165, 0.144);
+  padding: 25px 30px;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 420px;
+  width: 90%;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transform: scale(0.8);
+  transition: transform 0.3s ease;
+}
+
+.modal.show .modal-content {
+  transform: scale(1);
+}
+
+/* Tombol close (X) */
+.close {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  font-size: 22px;
+  cursor: pointer;
+  color: #ffffff;
+}
+
+/* Success Icon */
+.success-icon {
+  font-size: 40px;
+  color: #26ff5c;
+  margin-bottom: 10px;
+}
+
+/* Tombol Tutup */
+.ok-btn {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: #ffffff;
+  color: rgb(0, 110, 255);
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.ok-btn:hover {
+  background: #ffffff3d;
+}
+
 /* Footer */
 .site-footer {
   margin-top: 60px;

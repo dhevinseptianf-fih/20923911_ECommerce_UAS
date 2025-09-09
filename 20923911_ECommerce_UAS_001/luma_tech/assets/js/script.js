@@ -151,6 +151,26 @@ function renderCart() {
 
 const checkoutForm = document.getElementById("checkout-form");
 
+const orderModal = document.getElementById("orderModal");
+const closeModal = document.getElementById("closeModal");
+const okBtn = document.getElementById("okBtn");
+
+function openModal() {
+  orderModal.classList.remove("hidden");
+  setTimeout(() => orderModal.classList.add("show"), 10); // trigger animasi
+}
+
+function closeModalFn() {
+  orderModal.classList.remove("show");
+  setTimeout(() => orderModal.classList.add("hidden"), 300); // tunggu animasi selesai
+}
+
+closeModal.addEventListener("click", closeModalFn);
+okBtn.addEventListener("click", closeModalFn);
+orderModal.addEventListener("click", (e) => {
+  if (e.target === orderModal) closeModalFn();
+});
+
 if (checkoutForm) {
   checkoutForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -166,9 +186,15 @@ if (checkoutForm) {
 
     const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 
-    showToast(
-      `Terima kasih, ${nama}! Pesanan berhasil.\nTotal: Rp ${total.toLocaleString()}\nDikirim ke: ${alamat}`
-    );
+    const orderMessage = document.getElementById("orderMessage");
+    orderMessage.innerHTML = `
+      Terima kasih, <b>${nama}</b>!<br>
+      Total: <b>Rp ${total.toLocaleString()}</b><br>
+      Dikirim ke: <b>${alamat}</b><br>
+      No HP: <b>${nohp}</b>
+    `;
+
+    openModal();
 
     cart = [];
     localStorage.removeItem("cart");
@@ -207,14 +233,14 @@ function showToast(message, isError = false) {
   toast.style.position = "fixed";
   toast.style.bottom = "20px";
   toast.style.right = "20px";
-  toast.style.background = isError ? "#e74c3c" : "#27ae60";
+  toast.style.background = isError ? "#ff1900ff" : "#2255ffff";
   toast.style.color = "#fff";
-  toast.style.padding = "12px 20px";
+  toast.style.padding = "20px 20px";
   toast.style.borderRadius = "8px";
-  toast.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
+  toast.style.boxShadow = "0 2px 6px rgba(0, 0, 0, 0.44)";
   toast.style.zIndex = "9999";
   toast.style.opacity = "0";
-  toast.style.transition = "opacity 0.3s ease";
+  toast.style.transition = "opacity 1.0s ease";
 
   document.body.appendChild(toast);
 
