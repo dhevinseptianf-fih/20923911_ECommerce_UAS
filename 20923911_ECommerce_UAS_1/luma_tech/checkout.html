@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - LumaTech</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-wrap">
+    <a class="logo" href="index.html"><img src="assets/img/logo/Proyek Baru 398 [367C1DF].png" alt="Logo LumaTech" width="150"</a>
+    <nav class="nav" id="mainNav">
+      <a href="index.html">Home</a>
+      <a href="product.html">Produk</a>
+      <a href="checkout.html" class="active">Keranjang</a>
+      <a href="kontak.html">Kontak</a>
+    </nav>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+  </div>
+</header>
+
+<section class="section container">
+  <h1 class="section-title">Keranjang Belanja Anda</h1>
+
+  <div id="cart-items" class="cart-list"></div>
+  <h2>Total: <span id="cart-total">Rp 0</span></h2>
+  <button id="clear-cart" class="btn btn-outline mt-12">Kosongkan Keranjang</button>
+
+  <form id="checkout-form" class="form mt-24">
+    <div class="form-group">
+      <label for="nama">Nama Lengkap</label>
+      <input type="text" id="nama" name="nama" required>
+    </div>
+
+    <div class="form-group">
+      <label for="alamat">Alamat Pengiriman</label>
+      <textarea id="alamat" name="alamat" required></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="nohp">No. HP</label>
+      <input type="tel" id="nohp" name="nohp" required>
+    </div>
+
+    <div class="form-group">
+      <p style="font-size:13px;">Fitur alamat masih dalam pengembangan, Silahkan isi form dengan apa saja!!</p>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-24">Bayar Sekarang</button>
+  </form>
+</section>
+
+<footer class="site-footer">
+  <div class="container footer-bottom">
+    <p>© 2025 LumaTech. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="assets/js/script.js"></script>
+</body>
+</html>
